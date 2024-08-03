@@ -3,10 +3,11 @@ window.onload = function() {
     const folder = params.get('folder'); // Get the folder name from the URL query parameter
 
     if (folder) {
-        fetch(`https://joeyverbeke.github.io/fidget-files/public/${folder}/media.json`) // Corrected path
+        const url = `https://joeyverbeke.github.io/fidget-files/public/${folder}/media.json`;
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok.');
+                    throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
                 }
                 return response.json();
             })
@@ -14,7 +15,7 @@ window.onload = function() {
                 const mediaContainer = document.getElementById('media-container');
                 files.forEach(file => {
                     const fullPath = `https://joeyverbeke.github.io/fidget-files/public/${folder}/${file}`;
-                    if (file.endsWith('.jpg') || file.endsWith('.png')) {
+                    if (file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.gif')) {
                         const img = document.createElement('img');
                         img.src = fullPath;
                         mediaContainer.appendChild(img);
